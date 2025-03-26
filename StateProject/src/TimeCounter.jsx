@@ -1,28 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+
 
 export const TimeCounter = () => {
-    const [seconds, setSeconds] = useState(0); // Estado para los segundos
-    const intervalRef = useRef(null); // Referencia para almacenar el intervalo
-  
-    const startCounter = () => {
-      if (!intervalRef.current) { // Evita múltiples intervalos
-        intervalRef.current = setInterval(() => {
-          setSeconds((prevSeconds) => prevSeconds + 1);
-        }, 1000);
-      }
-    };
-  
-    const stopCounter = () => {
-      clearInterval(intervalRef.current); // Detiene el intervalo
-      intervalRef.current = null; // Limpia la referencia
-      setSeconds(0); // Reinicia el contador
-    };
-  
+    const [seconds, setSeconds] = useState(0);
+    const [running, setRunning] = useState(false);
+
+    useEffect(() => {
+        let interval;
+        if (running) {
+            interval = setInterval(() => {
+                setSeconds(prevSeconds => prevSeconds + 1);
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [running]);
+
     return (
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <h1>Contador: {seconds} segundos</h1>
-        <button onClick={startCounter} style={{ marginRight: '10px' }}>Iniciar</button>
-        <button onClick={stopCounter}>Parar</button>
-      </div>
+        <div className="timer-container">
+            <h2>Tiempo: {seconds} s</h2>
+            <button className="start-button" onClick={() => setRunning(true)}>Iniciar</button>
+            <button className="stop-button" onClick={() => { setRunning(false); setSeconds(0); }}>Parar</button>
+        </div>
     );
-  };
+};

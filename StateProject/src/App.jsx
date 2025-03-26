@@ -4,6 +4,7 @@ import { LikeCounter } from './LikeCounter.jsx';
 import { ColorButton } from './ColorButton.jsx';
 import { TimeCounter } from './TimeCounter.jsx';
 
+
 export function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
